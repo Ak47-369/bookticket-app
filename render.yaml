@@ -1,0 +1,98 @@
+services:
+  # 1. CONFIG SERVER
+  - type: web
+    name: config-server
+    runtime: docker
+    rootDir: platform/config-server 
+    plan: free
+    envVars:
+      - fromGroup: movie-app-secrets-prod
+      - key: SPRING_PROFILES_ACTIVE
+        value: native
+      - key: EUREKA_CLIENT_REGISTER_WITH_EUREKA
+        value: "false"
+      - key: EUREKA_CLIENT_FETCH_REGISTRY
+        value: "false"
+
+  # 2. EUREKA SERVER (Service Registry)
+  - type: web
+    name: service-registry
+    runtime: docker
+    rootDir: platform/eureka-server 
+    plan: free
+    envVars:
+      - fromGroup: movie-app-secrets-prod
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: EUREKA_CLIENT_REGISTER_WITH_EUREKA
+        value: "false"
+      - key: EUREKA_CLIENT_FETCH_REGISTRY
+        value: "false"
+      - key: SPRING_CONFIG_IMPORT
+        value: optional:configserver:http://config-server:8888
+
+  # 3. API GATEWAY
+  - type: web
+    name: api-gateway
+    runtime: docker
+    rootDir: platform/api-gateway 
+    plan: free
+    envVars:
+      - fromGroup: movie-app-secrets-prod
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_CONFIG_IMPORT
+        value: optional:configserver:http://config-server:8888
+      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        value: http://service-registry:8761/eureka/
+      - key: JWT_SECRET
+        sync: false
+      - key: EUREKA_INSTANCE_HOSTNAME
+        value: ${RENDER_SERVICE_NAME}
+      - key: EUREKA_INSTANCE_PREFER_IP_ADDRESS
+        value: "false"
+
+  # 4. USER SERVICE
+  - type: web
+    name: user-service
+    runtime: docker
+    rootDir: services/user-service 
+    plan: free
+    envVars:
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_CONFIG_IMPORT
+        value: optional:configserver:http://config-server:8888
+      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        value: http://service-registry:8761/eureka/
+      - key: EUREKA_INSTANCE_HOSTNAME
+        value: ${RENDER_SERVICE_NAME}
+      - key: EUREKA_INSTANCE_PREFER_IP_ADDRESS
+        value: "false"
+      - key: NEON_URL
+        sync: false
+      - key: NEON_USER
+        sync: false
+      - key: NEON_PASSWORD
+        sync: false
+
+  # 5. MOVIE SERVICE
+  - type: web
+    name: movie-service
+    runtime: docker
+    rootDir: services/movie-service 
+    plan: free
+    envVars:
+      - fromGroup: movie-app-secrets-prod
+      - key: SPRING_PROFILES_ACTIVE
+        value: prod
+      - key: SPRING_CONFIG_IMPORT
+        value: optional:configserver:http://config-server:8888
+      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        value: http://service-registry:8761/eureka/
+      - key: EUREKA_INSTANCE_HOSTNAME
+        value: ${RENDER_SERVICE_NAME}
+      - key: EUREKA_INSTANCE_PREFER_IP_ADDRESS
+        value: "false"
+      - key: MONGO_URI
+        sync: false

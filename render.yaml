@@ -8,7 +8,7 @@ services:
     envVars:
       - fromGroup: movie-app-secrets-prod
       - key: SPRING_PROFILES_ACTIVE
-        value: prod
+        value: native
       - key: EUREKA_CLIENT_REGISTER_WITH_EUREKA
         value: "false"
       - key: EUREKA_CLIENT_FETCH_REGISTRY

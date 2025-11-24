@@ -69,12 +69,14 @@ services:
         value: ${RENDER_SERVICE_NAME}
       - key: EUREKA_INSTANCE_PREFER_IP_ADDRESS
         value: "false"
-      - key: NEON_URL
+      - key: NEON_DB
         sync: false
-      - key: NEON_USER
-        sync: false
-      - key: NEON_PASSWORD
-        sync: false
+#      - key: NEON_URL
+#        sync: false
+#      - key: NEON_USER
+#        sync: false
+#      - key: NEON_PASSWORD
+#        sync: false
 
   # 5. MOVIE SERVICE
   - type: web
@@ -94,8 +96,10 @@ services:
         value: ${RENDER_SERVICE_NAME}
       - key: EUREKA_INSTANCE_PREFER_IP_ADDRESS
         value: "false"
-      - key: MONGO_URI
+      - key: NEON_DB
         sync: false
+#      - key: MONGO_URI
+#        sync: false
   # 6. Theater Service
   - type: web
     name : theater-service
@@ -114,8 +118,10 @@ services:
         value: ${RENDER_SERVICE_NAME}
         - key: EUREKA_INSTANCE_PREFER_IP_ADDRESS
         value: "false"
-        - key: MONGO_URI
-        sync: false
+        - key: NEON_DB
+          sync: false
+#        - key: MONGO_URI
+#        sync: false
 
   # 7. BOOKING SERVICE
   - type: web
@@ -135,10 +141,12 @@ services:
         value: ${RENDER_SERVICE_NAME}
       - key: EUREKA_INSTANCE_PREFER_IP_ADDRESS
         value: "false"
-      - key: REDIS_URL
+      - key: NEON_DB
         sync: false
-      - key: REDIS_PASSWORD
-        sync: false
+#      - key: REDIS_URL
+#        sync: false
+#      - key: REDIS_PASSWORD
+#        sync: false
 
   # 8. PAYMENT SERVICE
   - type: web
@@ -158,10 +166,12 @@ services:
         value: ${RENDER_SERVICE_NAME}
       - key: EUREKA_INSTANCE_PREFER_IP_ADDRESS
         value: "false"
-      - key: STRIPE_SECRET_KEY
+      - key: NEON_DB
         sync: false
-      - key: STRIPE_PUBLIC_KEY
-        sync: false
+#      - key: STRIPE_SECRET_KEY
+#        sync: false
+#      - key: STRIPE_PUBLIC_KEY
+#        sync: false
 
   # 9. NOTIFICATION SERVICE
   - type: web
@@ -181,3 +191,5 @@ services:
         value: ${RENDER_SERVICE_NAME}
       - key: EUREKA_INSTANCE_PREFER_IP_ADDRESS
         value: "false"
+      - key: NEON_DB
+        sync: false

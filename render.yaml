@@ -40,10 +40,10 @@ services:
         value: prod
 #      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
 #        value: http://service-registry:8761/eureka/
-      - key: CONFIG_SERVER_URL
-        value: https://config-server-f2t3.onrender.com
-      - key: JWT_SECRET
-        sync: false
+#      - key: CONFIG_SERVER_URL
+#        value: https://config-server-f2t3.onrender.com
+#      - key: JWT_SECRET
+#        sync: false
       - key: EUREKA_INSTANCE_HOSTNAME
         value: ${RENDER_SERVICE_NAME}
       - key: EUREKA_INSTANCE_PREFER_IP_ADDRESS

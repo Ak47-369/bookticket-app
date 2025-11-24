@@ -22,9 +22,10 @@ spring:
   config:
     activate:
       on-profile: prod
-    import: "configserver:https://config-server-f2t3.onrender.com"
+    import: "configserver:${CONFIG_SERVER_URL:http://config-server:8888}"
   cloud:
     config:
+      label: main
       fail-fast: true
       retry:
         initial-interval: 2000

@@ -5,6 +5,7 @@ spring:
     active: prod
   cloud:
     config:
+      enabled: false
       server:
         git:
           uri: ${GITHUB_REPO_URL}

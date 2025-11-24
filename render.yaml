@@ -7,10 +7,8 @@ services:
     plan: free
     envVars:
       - fromGroup: movie-app-secrets-prod
-      - key: EUREKA_CLIENT_REGISTER_WITH_EUREKA
-        value: "false"
-      - key: EUREKA_CLIENT_FETCH_REGISTRY
-        value: "false"
+      - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+        value: http://service-registry:8761/eureka/
 
   # 2. EUREKA SERVER (Service Registry)
   - type: web

@@ -3,7 +3,7 @@ spring:
     name: api-gateway
   profiles:
     # Default profile when running locally from the IDE
-    active: dev
+    active: prod
 
 ---
 
@@ -22,7 +22,8 @@ spring:
   config:
     activate:
       on-profile: prod
-    import: "optional:configserver:http://config-server:8888"
+#    import: "optional:configserver:http://config-server:8888"
+      import: "optional:configserver:https://config-server-bmsm.onrender.com"
   cloud:
     config:
       fail-fast: true

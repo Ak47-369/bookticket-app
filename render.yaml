@@ -36,8 +36,8 @@ services:
       - fromGroup: movie-app-secrets-prod
       - key: SPRING_PROFILES_ACTIVE
         value: prod
-      - key: SPRING_CONFIG_IMPORT
-        value: configserver:https://config-server-f2t3.onrender.com
+      # - key: SPRING_CONFIG_IMPORT
+      #   value: configserver:https://config-server-f2t3.onrender.com
       - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
         value: http://service-registry:8761/eureka/
       - key: JWT_SECRET

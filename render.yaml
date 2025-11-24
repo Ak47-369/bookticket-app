@@ -7,9 +7,7 @@ services:
     plan: free
     envVars:
       - fromGroup: movie-app-secrets-prod
-      - key: EUREKA_CLIENT_REGISTER_WITH_EUREKA
-        value: "false"
-      - key: EUREKA_CLIENT_FETCH_REGISTRY
+      - key: EUREKA_CLIENT_ENABLED
         value: "false"
 
   # 2. EUREKA SERVER (Service Registry)

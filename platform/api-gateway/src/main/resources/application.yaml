@@ -22,8 +22,7 @@ spring:
   config:
     activate:
       on-profile: prod
-#    import: "optional:configserver:http://config-server:8888"
-      import: "optional:configserver:https://config-server-bmsm.onrender.com"
+    import: "configserver:${CONFIG_SERVER_URL:http://config-server:8888}"
   cloud:
     config:
       fail-fast: true

@@ -24,8 +24,8 @@ services:
         value: "false"
       - key: EUREKA_CLIENT_FETCH_REGISTRY
         value: "false"
-      - key: CONFIG_SERVER_URL
-        value: https://config-server-f2t3.onrender.com
+      # - key: CONFIG_SERVER_URL
+        # value: https://config-server-f2t3.onrender.com
   # 3. API GATEWAY
   - type: web
     name: api-gateway

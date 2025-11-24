@@ -68,12 +68,6 @@ services:
         sync: false
       - key: CONFIG_SERVER_URL
         value: https://config-server-f2t3.onrender.com
-  #      - key: NEON_URL
-  #        sync: false
-  #      - key: NEON_USER
-  #        sync: false
-  #      - key: NEON_PASSWORD
-  #        sync: false
 
   # 5. MOVIE SERVICE
   - type: web
@@ -95,8 +89,9 @@ services:
         value: "false"
       - key: NEON_DB
         sync: false
-  #      - key: MONGO_URI
-  #        sync: false
+      - key: CONFIG_SERVER_URL
+        value: https://config-server-f2t3.onrender.com
+
   # 6. Theater Service
   - type: web
     name : theater-service
@@ -117,8 +112,8 @@ services:
         value: "false"
       - key: NEON_DB
         sync: false
-  #        - key: MONGO_URI
-  #        sync: false
+      - key: CONFIG_SERVER_URL
+        value: https://config-server-f2t3.onrender.com
 
   # 7. BOOKING SERVICE
   - type: web
@@ -140,10 +135,8 @@ services:
         value: "false"
       - key: NEON_DB
         sync: false
-  #      - key: REDIS_URL
-  #        sync: false
-  #      - key: REDIS_PASSWORD
-  #        sync: false
+      - key: CONFIG_SERVER_URL
+        value: https://config-server-f2t3.onrender.com
 
   # 8. PAYMENT SERVICE
   - type: web
@@ -165,10 +158,8 @@ services:
         value: "false"
       - key: NEON_DB
         sync: false
-  #      - key: STRIPE_SECRET_KEY
-  #        sync: false
-  #      - key: STRIPE_PUBLIC_KEY
-  #        sync: false
+      - key: CONFIG_SERVER_URL
+        value: https://config-server-f2t3.onrender.com
 
   # 9. NOTIFICATION SERVICE
   - type: web
@@ -190,3 +181,5 @@ services:
         value: "false"
       - key: NEON_DB
         sync: false
+      - key: CONFIG_SERVER_URL
+        value: https://config-server-f2t3.onrender.com

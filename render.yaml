@@ -103,7 +103,7 @@ services:
     rootDir: services/theater-service
     plan: free
     envVars:
-      - fromGroup: movie-app-secrets-prod
+        - fromGroup: movie-app-secrets-prod
         - key: SPRING_PROFILES_ACTIVE
         value: prod
         - key: SPRING_CONFIG_IMPORT

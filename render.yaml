@@ -109,15 +109,15 @@ services:
     envVars:
         - fromGroup: movie-app-secrets-prod
         - key: SPRING_PROFILES_ACTIVE
-        value: prod
+          value: prod
         - key: SPRING_CONFIG_IMPORT
-        value: optional:configserver:http://config-server:8888
+          value: optional:configserver:http://config-server:8888
         - key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
-        value: http://service-registry:8761/eureka/
+          value: http://service-registry:8761/eureka/
         - key: EUREKA_INSTANCE_HOSTNAME
-        value: ${RENDER_SERVICE_NAME}
+          value: ${RENDER_SERVICE_NAME}
         - key: EUREKA_INSTANCE_PREFER_IP_ADDRESS
-        value: "false"
+          value: "false"
         - key: NEON_DB
           sync: false
 #        - key: MONGO_URI

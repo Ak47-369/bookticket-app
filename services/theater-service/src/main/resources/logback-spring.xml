@@ -41,7 +41,7 @@
         </http>
         <format>
             <label>
-                <pattern>app=${service_name},host=${HOSTNAME},level=%level,traceID=%X{traceId:-NONE}</pattern>
+                <pattern>app=${service_name},host=${HOSTNAME},level=%level,traceId=%X{traceId:-NONE},spanId=%X{spanId:-NONE},requestId=%X{requestId:-NONE}</pattern>
             </label>
             <message>
                 <class>com.github.loki4j.logback.JsonLayout</class>

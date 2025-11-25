@@ -32,3 +32,7 @@ spring:
         max-interval: 10000
         multiplier: 1.5
         max-attempts: 30
+
+springdoc:
+  swagger-ui:
+    use-root-path: true

@@ -14,6 +14,7 @@ import java.util.List;
  * always shows the public API Gateway URL, regardless of what the individual
  * services report.
  */
+/*
 @Configuration
 public class OpenApiGatewayConfig {
 
@@ -33,3 +34,6 @@ public class OpenApiGatewayConfig {
         };
     }
 }
+Temp Change to Remove Conflict
+*/
+

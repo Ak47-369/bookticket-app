@@ -2,7 +2,6 @@ package com.bookticket.api_gateway.ratelimit;
 
 import com.bookticket.api_gateway.configuration.JwtUtils;
 import com.bookticket.api_gateway.gateway.RouterValidator;
-import com.bookticket.api_gateway.ratelimit.RedisRateLimiterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
@@ -14,7 +13,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
+import java.net.InetSocketAddress;
 import java.util.Objects;
+import java.util.Optional;
 
 @Component
 @Slf4j
@@ -120,8 +121,11 @@ public class RateLimitingFilter implements GlobalFilter, Ordered {
             return xRealIp;
         }
         
-        // Fallback to remote address
-        return Objects.requireNonNull(request.getRemoteAddress()).getAddress().getHostAddress();
+        // Fallback to remote address with proper null checks
+        return Optional.ofNullable(request.getRemoteAddress())
+                .map(InetSocketAddress::getAddress)
+                .map(java.net.InetAddress::getHostAddress)
+                .orElse("unknown");
     }
 
     /**
@@ -137,4 +141,3 @@ public class RateLimitingFilter implements GlobalFilter, Ordered {
         return response.writeWith(Mono.just(response.bufferFactory().wrap(errorMessage.getBytes())));
     }
 }
-

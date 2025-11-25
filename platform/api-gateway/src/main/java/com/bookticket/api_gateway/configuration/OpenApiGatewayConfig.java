@@ -12,8 +12,7 @@ import java.util.List;
  * This configuration programmatically overrides the server URLs for all downstream
  * microservices discovered by the API Gateway. It ensures that the Swagger UI
  * always shows the public API Gateway URL, regardless of what the individual
- * services report. This is the most robust solution for fixing incorrect server
- * URLs in the combined Swagger documentation.
+ * services report.
  */
 @Configuration
 public class OpenApiGatewayConfig {

@@ -8,8 +8,10 @@ import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
+import io.swagger.v3.oas.models.servers.Server;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springdoc.core.models.GroupedOpenApi;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,6 +21,8 @@ public class OpenAPIConfig {
     private static final String SCHEME_NAME = "bearerAuth";
     private static final String SCHEME = "bearer";
     private static final String BEARER_FORMAT = "JWT";
+    @Value("${api-gateway.public-url}")
+    private String gatewayPublicUrl;
 
     @Bean
     public GroupedOpenApi publicApi() {
@@ -32,8 +36,7 @@ public class OpenAPIConfig {
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
-                // Do not manually add servers. Let SpringDoc handle it.
-                // .addServersItem(new Server().url(API_GATEWAY_URL))
+                .addServersItem(new Server().url(gatewayPublicUrl).description("Production API Gateway"))
                 .info(apiInfo())
                 .addSecurityItem(new SecurityRequirement().addList(SCHEME_NAME))
                 .components(new Components()

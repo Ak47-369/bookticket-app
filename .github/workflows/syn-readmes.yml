@@ -46,15 +46,15 @@ jobs:
           }
 
           # Add your services here (modify names if needed)
-          fetch_readme "https://raw.githubusercontent.com/AK47/bookticket-config-server/main/README.md" "Config Server"
-          fetch_readme "https://raw.githubusercontent.com/AK47/bookticket-eureka-server/main/README.md" "Service Registry"
-          fetch_readme "https://raw.githubusercontent.com/AK47/bookticket-api-gateway/main/README.md" "API Gateway"
-          fetch_readme "https://raw.githubusercontent.com/AK47/bookticket-user-service/main/README.md" "User Service"
-          fetch_readme "https://raw.githubusercontent.com/AK47/bookticket-movie-service/main/README.md" "Movie Service"
-          fetch_readme "https://raw.githubusercontent.com/AK47/bookticket-theater-service/main/README.md" "Theater Service"
-          fetch_readme "https://raw.githubusercontent.com/AK47/bookticket-booking-service/main/README.md" "Booking Service"
-          fetch_readme "https://raw.githubusercontent.com/AK47/bookticket-payment-service/main/README.md" "Payment Service"
-          fetch_readme "https://raw.githubusercontent.com/AK47/bookticket-notification-service/main/README.md" "Notification Service"
+          fetch_readme "https://raw.githubusercontent.com/Ak47-369/bookticket-config-server/main/README.md" "Config Server"
+          fetch_readme "https://raw.githubusercontent.com/Ak47-369/bookticket-eureka-server/main/README.md" "Service Registry"
+          fetch_readme "https://raw.githubusercontent.com/Ak47-369/bookticket-api-gateway/main/README.md" "API Gateway"
+          fetch_readme "https://raw.githubusercontent.com/Ak47-369/bookticket-user-service/main/README.md" "User Service"
+          fetch_readme "https://raw.githubusercontent.com/Ak47-369/bookticket-movie-service/main/README.md" "Movie Service"
+          fetch_readme "https://raw.githubusercontent.com/Ak47-369/bookticket-theater-service/main/README.md" "Theater Service"
+          fetch_readme "https://raw.githubusercontent.com/Ak47-369/bookticket-booking-service/main/README.md" "Booking Service"
+          fetch_readme "https://raw.githubusercontent.com/Ak47-369/bookticket-payment-service/main/README.md" "Payment Service"
+          fetch_readme "https://raw.githubusercontent.com/Ak47-369/bookticket-notification-service/main/README.md" "Notification Service"
 
       - name: Commit & Push updated README.md
         run: |

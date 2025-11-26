@@ -69,7 +69,6 @@ public class NotificationOrchestrationService {
 
             // Fetch user email with proper error handling
             String userEmail = fetchUserEmail(bookingSuccessEvent.userId());
-            userEmail = "qanonymous756@gmail.com"; // TODO - Remove this later
 
             // Fetch show details with proper error handling
             ShowDetails showDetails = fetchShowDetails(bookingSuccessEvent.showId());
@@ -187,7 +186,6 @@ public class NotificationOrchestrationService {
 
             // Fetch user email with proper error handling
             userEmail = fetchUserEmail(bookingFailedEvent.userId());
-            userEmail = "qanonymous756@gmail.com"; // TODO - Remove this later
 
             String htmlBody = emailTemplateService.generateBookingFailureEmail(
                     "Valued Customer",

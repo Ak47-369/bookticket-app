@@ -285,7 +285,7 @@ public class BookingService {
                 log.info("Releasing seat locks for booking {} after successful payment", bookingId);
                 redisLockService.releaseSeatsLockByIds(confirmedBooking.getShowId(), seatIds);
 
-                //TODO Push to booking_success topic in Kafka
+                //Push to booking_success topic in Kafka
                 sendBookingSuccessEvent(confirmedBooking);
 
                 // Map to response
@@ -320,7 +320,7 @@ public class BookingService {
                 //Mark Seats as Available
                 theaterService.releaseSeats(failedBooking.getShowId(), seatIds);
 
-                // TODO - Send booking_failed event to kafka
+                // Send booking_failed event to kafka
                 sendBookingFailedEvent(failedBooking, paymentResponse.message());
 
                 throw new PaymentFailedException(
@@ -341,7 +341,7 @@ public class BookingService {
             //Mark Seats as Available
             theaterService.releaseSeats(booking.getShowId(), seatIds);
 
-            // TODO - Send booking_failed event to kafka
+            // Send booking_failed event to kafka
             sendBookingFailedEvent(failedBooking, e.getMessage());
             // Re-throw PaymentFailedException
             throw e;

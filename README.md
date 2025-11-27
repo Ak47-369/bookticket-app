@@ -62,153 +62,6 @@ Each microservice has its own independent repository. Click a toggle to expand t
 
 ---
 
-<!-- INJECT: CONFIG_SERVER -->
-
-</details>
-
----
-
-## **🔹 Service Registry (Eureka)**
-<details>
-<summary><strong>Click to view Service Registry documentation</strong></summary>
-
-### 📦 Repository  
-👉 https://github.com/Ak47-369/bookticket-eureka-server  
-
----
-
-<!-- INJECT: EUREKA_SERVER -->
-
-</details>
-
----
-
-## **🔹 API Gateway**
-<details>
-<summary><strong>Click to view API Gateway documentation</strong></summary>
-
-### 📦 Repository  
-👉 https://github.com/Ak47-369/bookticket-api-gateway  
-
----
-
-<!-- INJECT: API_GATEWAY -->
-
-</details>
-
----
-
-## **🔹 User Service**
-<details>
-<summary><strong>Click to view User Service documentation</strong></summary>
-
-### 📦 Repository  
-👉 https://github.com/Ak47-369/bookticket-user-service  
-
----
-
-<!-- INJECT: USER_SERVICE -->
-
-</details>
-
----
-
-## **🔹 Movie Service**
-<details>
-<summary><strong>Click to view Movie Service documentation</strong></summary>
-
-### 📦 Repository  
-👉 https://github.com/Ak47-369/bookticket-movie-service  
-
----
-
-<!-- INJECT: MOVIE_SERVICE -->
-
-</details>
-
----
-
-## **🔹 Theater Service**
-<details>
-<summary><strong>Click to view Theater Service documentation</strong></summary>
-
-### 📦 Repository  
-👉 https://github.com/Ak47-369/bookticket-theater-service  
-
----
-
-<!-- INJECT: THEATER_SERVICE -->
-
-</details>
-
----
-
-## **🔹 Booking Service**
-<details>
-<summary><strong>Click to view Booking Service documentation</strong></summary>
-
-### 📦 Repository  
-👉 https://github.com/Ak47-369/bookticket-booking-service  
-
----
-
-<!-- INJECT: BOOKING_SERVICE -->
-
-</details>
-
----
-
-## **🔹 Payment Service**
-<details>
-<summary><strong>Click to view Payment Service documentation</strong></summary>
-
-### 📦 Repository  
-👉 https://github.com/Ak47-369/bookticket-payment-service  
-
----
-
-<!-- INJECT: PAYMENT_SERVICE -->
-
-</details>
-
----
-
-## **🔹 Notification Service**
-<details>
-<summary><strong>Click to view Notification Service documentation</strong></summary>
-
-### 📦 Repository  
-👉 https://github.com/Ak47-369/bookticket-notification-service  
-
----
-
-<!-- INJECT: NOTIFICATION_SERVICE -->
-
-</details>
-
----
-
-## ⚙️ Notes About Render Free Tier
-
-- Services sleep after ~15 minutes  
-- Expect slow cold-starts, especially for Config Server & Eureka  
-- Use the **Starter Postman Flow** before running main collection  
-
----
-
-## 📬 Contact / Author
-
-**Amit Kumar**  
-GitHub: https://github.com/Ak47-369  
-LinkedIn: *(Add your URL)*
-
-
----
-
-# 📌 Microservices Documentation
-
-## 🔹 Config Server
-
 # BookTicket :: Platform :: Config Server
 
 ## Overview
@@ -254,9 +107,18 @@ The Config Server exposes a REST API for clients to fetch their configuration. Y
 -   **Example:** To see the production configuration for the `api-gateway`, you would access:
     `https://config-server-f2t3.onrender.com/api-gateway/prod`
 
+</details>
+
 ---
 
-## 🔹 Service Registry
+## **🔹 Service Registry (Eureka)**
+<details>
+<summary><strong>Click to view Service Registry documentation</strong></summary>
+
+### 📦 Repository  
+👉 https://github.com/Ak47-369/bookticket-eureka-server  
+
+---
 
 # BookTicket :: Platform :: Eureka Server (Service Registry)
 
@@ -298,9 +160,18 @@ The Eureka Server provides a web dashboard to visualize the status of all regist
 
 -   **URL:** `https://service-registry-a48d.onrender.com/`
 
+</details>
+
 ---
 
-## 🔹 API Gateway
+## **🔹 API Gateway**
+<details>
+<summary><strong>Click to view API Gateway documentation</strong></summary>
+
+### 📦 Repository  
+👉 https://github.com/Ak47-369/bookticket-api-gateway  
+
+---
 
 # BookTicket :: Platform :: API Gateway
 
@@ -318,7 +189,7 @@ This service is built using **Spring Cloud Gateway**.
 -   **Rate Limiting:** Protects the system from abuse by enforcing rate limits on incoming requests using a Redis-backed token bucket algorithm.
 -   **Unified API Documentation:** Aggregates OpenAPI (Swagger) documentation from all downstream services into a single, convenient UI.
 
-## Architecture & Request Flow
+## Architecture <!-- INJECT: API_GATEWAY --> Request Flow
 
 <img width="500" height="1200" alt="API-Gateway-Flow" src="https://github.com/user-attachments/assets/8f7c6825-292a-4169-a3dd-b6ef3a8b59a7" />
 
@@ -346,9 +217,18 @@ The gateway's configuration, including its routes, is managed by the **Config Se
 -   **Routes:** Defined under `spring.cloud.gateway.routes`, mapping URL paths to service IDs (e.g., `lb://user-service`).
 -   **Documentation:** The `springdoc.swagger-ui.urls` property is used to define the list of microservices to include in the combined documentation view.
 
+</details>
+
 ---
 
-## 🔹 User Service
+## **🔹 User Service**
+<details>
+<summary><strong>Click to view User Service documentation</strong></summary>
+
+### 📦 Repository  
+👉 https://github.com/Ak47-369/bookticket-user-service  
+
+---
 
 # BookTicket :: Services :: User Service
 
@@ -404,9 +284,18 @@ These endpoints require a valid JWT in the `Authorization` header for access.
 -   `GET /api/v1/users`: Fetches a list of all users. (Requires `ADMIN` role).
 -   `DELETE /api/v1/users/{id}`: Deletes a user account. (Requires `ADMIN` role).
 
+</details>
+
 ---
 
-## 🔹 Movie Service
+## **🔹 Movie Service**
+<details>
+<summary><strong>Click to view Movie Service documentation</strong></summary>
+
+### 📦 Repository  
+👉 https://github.com/Ak47-369/bookticket-movie-service  
+
+---
 
 # BookTicket :: Services :: Movie Service
 
@@ -447,9 +336,18 @@ The service's endpoints are exposed through the API Gateway under the `/api/v1/m
 -   `GET /api/v1/movies/{id}`: Fetches detailed information for a single movie by its unique ID.
 -   `GET /api/v1/movies/now-playing`: A search endpoint that finds all movies currently playing in a specific city, based on show data from the Theater Service. This is a key endpoint for the user-facing application.
 
+</details>
+
 ---
 
-## 🔹 Theater Service
+## **🔹 Theater Service**
+<details>
+<summary><strong>Click to view Theater Service documentation</strong></summary>
+
+### 📦 Repository  
+👉 https://github.com/Ak47-369/bookticket-theater-service  
+
+---
 
 # BookTicket :: Services :: Theater Service
 
@@ -509,9 +407,18 @@ The service's endpoints are exposed through the API Gateway. They provide compre
 -   `POST /api/v1/internal/shows/lock-seats`: Used by the `Booking Service` to mark seats as temporarily locked during the booking process.
 -   `POST /api/v1/internal/shows/book-seats`: Used by the `Booking Service` to permanently mark seats as booked after a successful payment.
 
+</details>
+
 ---
 
-## 🔹 Booking Service
+## **🔹 Booking Service**
+<details>
+<summary><strong>Click to view Booking Service documentation</strong></summary>
+
+### 📦 Repository  
+👉 https://github.com/Ak47-369/bookticket-booking-service  
+
+---
 
 # BookTicket :: Services :: Booking Service
 
@@ -526,7 +433,7 @@ The **Booking Service** is the transactional engine of the BookTicket platform. 
 -   **Payment Initiation:** Coordinates with the `Payment Service` to create and process payments.
 -   **Asynchronous Notifications:** Publishes events to a message queue (Kafka) to trigger downstream processes, such as sending confirmation emails, without blocking the core booking flow.
 
-## Architecture & Saga Orchestration
+## Architecture <!-- INJECT: BOOKING_SERVICE --> Saga Orchestration
 
 The booking process is a classic example of a **Saga pattern**, orchestrated by this service.
 <img width="3146" height="1998" alt="Booking Service" src="https://github.com/user-attachments/assets/cc6c8a91-8a4c-423c-bdb7-67c7f0f1265e" />
@@ -557,9 +464,18 @@ The service's endpoints are exposed through the API Gateway and are secured, req
 -   `GET /api/v1/bookings/{id}`: Fetches the complete details of a specific booking by its ID.
 -   `GET /api/v1/bookings/{id}/seats`: Fetches the specific seat details (number, type, price) associated with a particular booking.
 
+</details>
+
 ---
 
-## 🔹 Payment Service
+## **🔹 Payment Service**
+<details>
+<summary><strong>Click to view Payment Service documentation</strong></summary>
+
+### 📦 Repository  
+👉 https://github.com/Ak47-369/bookticket-payment-service  
+
+---
 
 # BookTicket :: Services :: Payment Service
 
@@ -574,7 +490,7 @@ The **Payment Service** is a specialized microservice that acts as a secure faca
 -   **Payment Status Verification:** Exposes an endpoint that allows the `Booking Service` to poll for the status of a payment after the user has been redirected to Stripe.
 -   **Transactional Record Keeping:** Persists a `Payment` entity for every transaction attempt, providing a local audit trail and decoupling the system from relying solely on Stripe's API for historical data.
 
-## Architecture & Communication Flow
+## Architecture <!-- INJECT: PAYMENT_SERVICE --> Communication Flow
 
 This service is part of a **synchronous polling** model for payment verification, which is a robust pattern for confirming payment status when a webhook is not used.
 <img width="3425" height="2302" alt="PaymentService" src="https://github.com/user-attachments/assets/4a5f5946-2a76-4106-92d2-11b429099bd8" />
@@ -614,9 +530,18 @@ These endpoints are exposed through the API Gateway and require the `ADMIN` role
 -   `GET /api/v1/admin/booking-dlq/stats`: Provides high-level statistics for the DLQ, including the total counts of pending and failed events.
 -   `GET /api/v1/admin/booking-dlq/booking/{bookingId}`: Fetches a detailed list and status summary of all failed events associated with a specific booking ID.
 
+</details>
+
 ---
 
-## 🔹 Notification Service
+## **🔹 Notification Service**
+<details>
+<summary><strong>Click to view Notification Service documentation</strong></summary>
+
+### 📦 Repository  
+👉 https://github.com/Ak47-369/bookticket-notification-service  
+
+---
 
 # BookTicket :: Services :: Notification Service
 
@@ -627,11 +552,11 @@ The **Notification Service** is an asynchronous, event-driven microservice respo
 ## Core Responsibilities
 
 -   **Asynchronous Event Consumption:** Listens to Apache Kafka topics for events published by other services (e.g., `BookingConfirmationEvent`).
--   **Email Generation & Sending:** Uses email templates (Thymeleaf) and a third-party API (Brevo) to construct and send rich HTML emails.
--   **PDF & QR Code Generation:** Generates PDF e-tickets, complete with a unique QR code for validation, and attaches them to confirmation emails.
+-   **Email Generation <!-- INJECT: NOTIFICATION_SERVICE --> Sending:** Uses email templates (Thymeleaf) and a third-party API (Brevo) to construct and send rich HTML emails.
+-   **PDF <!-- INJECT: NOTIFICATION_SERVICE --> QR Code Generation:** Generates PDF e-tickets, complete with a unique QR code for validation, and attaches them to confirmation emails.
 -   **Resilient Error Handling:** Implements a robust retry and Dead Letter Queue (DLQ) mechanism to ensure that failed notifications are never lost and can be reprocessed.
 
-## Architecture & Asynchronous Flow
+## Architecture <!-- INJECT: NOTIFICATION_SERVICE --> Asynchronous Flow
 <img width="800" height="1000" alt="Notification-Service" src="https://github.com/user-attachments/assets/a352ed91-4834-425f-9050-481b4e0af9df" />
 
 
@@ -648,7 +573,7 @@ The **Notification Service** is an asynchronous, event-driven microservice respo
 -   **Spring Kafka:** For consuming messages from Apache Kafka topics.
 -   **Brevo Java SDK:** The official library for interacting with the Brevo email API.
 -   **Spring Boot Starter Thymeleaf:** For processing HTML email templates.
--   **OpenPDF & ZXing:** For generating PDF tickets and QR codes.
+-   **OpenPDF <!-- INJECT: NOTIFICATION_SERVICE --> ZXing:** For generating PDF tickets and QR codes.
 -   **Spring Retry:** To handle transient failures when sending emails.
 -   **Eureka Discovery Client:** To register with the service registry.
 
@@ -678,5 +603,21 @@ These endpoints are exposed through the API Gateway and require the `ADMIN` role
 -   `GET /api/v1/admin/notification-dlq/stats`: Provides high-level statistics for the DLQ, including the total counts of pending and failed notifications.
 -   `GET /api/v1/admin/notification-dlq/booking/{bookingId}`: Fetches a detailed list and status summary of all failed notifications associated with a specific booking ID. This is very useful for debugging a specific user's issue.
 
+</details>
+
 ---
+
+## ⚙️ Notes About Render Free Tier
+
+- Services sleep after ~15 minutes  
+- Expect slow cold-starts, especially for Config Server & Eureka  
+- Use the **Starter Postman Flow** before running main collection  
+
+---
+
+## 📬 Contact / Author
+
+**Amit Kumar**  
+GitHub: https://github.com/Ak47-369  
+LinkedIn: *(Add your URL)*
 

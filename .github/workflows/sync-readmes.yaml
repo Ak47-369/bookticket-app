@@ -8,57 +8,57 @@ on:
 permissions:
   contents: write
 jobs:
-  sync:
+  sync-readme:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout monorepo
+      - name: Checkout Monorepo
         uses: actions/checkout@v3
+      - name: Clone External Microservice Repos
+        run: |
+          mkdir microservices
 
-      - name: Build README.md from template + external repos
+          declare -A repos=(
+            ["CONFIG_SERVER"]="https://github.com/Ak47-369/bookticket-config-server"
+            ["EUREKA_SERVER"]="https://github.com/Ak47-369/bookticket-eureka-server"
+            ["API_GATEWAY"]="https://github.com/Ak47-369/bookticket-api-gateway"
+            ["USER_SERVICE"]="https://github.com/Ak47-369/bookticket-user-service"
+            ["MOVIE_SERVICE"]="https://github.com/Ak47-369/bookticket-movie-service"
+            ["THEATER_SERVICE"]="https://github.com/Ak47-369/bookticket-theater-service"
+            ["BOOKING_SERVICE"]="https://github.com/Ak47-369/bookticket-booking-service"
+            ["PAYMENT_SERVICE"]="https://github.com/Ak47-369/bookticket-payment-service"
+            ["NOTIFICATION_SERVICE"]="https://github.com/Ak47-369/bookticket-notification-service"
+          )
+
+          for key in "${!repos[@]}"; do
+            echo "Cloning ${repos[$key]}"
+            git clone --depth 1 "${repos[$key]}" "microservices/$key"
+          done
+
+      - name: Generate README.md from Template
         run: |
           cp README.template.md README.md
 
-          echo "" >> README.md
-          echo "---" >> README.md
-          echo "" >> README.md
-          echo "# 📌 Microservices Documentation" >> README.md
-          echo "" >> README.md
+          for key in CONFIG_SERVER EUREKA_SERVER API_GATEWAY USER_SERVICE \
+                     MOVIE_SERVICE THEATER_SERVICE BOOKING_SERVICE \
+                     PAYMENT_SERVICE NOTIFICATION_SERVICE
+          do
+            echo "Injecting README for $key"
 
-          fetch_readme () {
-            RAW_URL=$1
-            NAME=$2
-
-            echo "## 🔹 $NAME" >> README.md
-            echo "" >> README.md
-
-            curl -L "$RAW_URL" -o TEMP_README.md
-
-            if [ -s TEMP_README.md ]; then
-              cat TEMP_README.md >> README.md
+            if [ -f "microservices/$key/README.md" ]; then
+              CONTENT=$(sed 's/\\/\\\\/g' microservices/$key/README.md | sed ':a;N;$!ba;s/\n/\\n/g')
+              sed -i "s|<!-- INJECT: $key -->|$CONTENT|g" README.md
             else
-              echo "_README not found for $NAME._" >> README.md
+              sed -i "s|<!-- INJECT: $key -->|⚠️ README.md missing in $key repo|g" README.md
             fi
+          done
 
-            echo "" >> README.md
-            echo "---" >> README.md
-            echo "" >> README.md
-          }
-
-          fetch_readme "https://raw.githubusercontent.com/Ak47-369/bookticket-config-server/main/README.md" "Config Server"
-          fetch_readme "https://raw.githubusercontent.com/Ak47-369/bookticket-eureka-server/main/README.md" "Service Registry"
-          fetch_readme "https://raw.githubusercontent.com/Ak47-369/bookticket-api-gateway/main/README.md" "API Gateway"
-          fetch_readme "https://raw.githubusercontent.com/Ak47-369/bookticket-user-service/main/README.md" "User Service"
-          fetch_readme "https://raw.githubusercontent.com/Ak47-369/bookticket-movie-service/main/README.md" "Movie Service"
-          fetch_readme "https://raw.githubusercontent.com/Ak47-369/bookticket-theater-service/main/README.md" "Theater Service"
-          fetch_readme "https://raw.githubusercontent.com/Ak47-369/bookticket-booking-service/main/README.md" "Booking Service"
-          fetch_readme "https://raw.githubusercontent.com/Ak47-369/bookticket-payment-service/main/README.md" "Payment Service"
-          fetch_readme "https://raw.githubusercontent.com/Ak47-369/bookticket-notification-service/main/README.md" "Notification Service"
-
-      - name: Commit & Push updated README.md
+      - name: Commit & Push README
         run: |
           git config --global user.name "github-actions"
           git config --global user.email "github-actions@github.com"
-          git add README.md
-          git commit -m "Auto-sync README from external microservices" || echo "No changes to commit"
-          git push
+
+          git add README.md || true
+          git commit -m "Auto-sync README (external microservice docs)" || exit 0
+          git push origin main
+

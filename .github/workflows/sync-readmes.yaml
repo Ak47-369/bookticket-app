@@ -16,13 +16,21 @@ jobs:
     steps:
       - name: Checkout monorepo
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Install dependencies
+        run: sudo apt-get update && sudo apt-get install -y jq
 
       - name: Generate README.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TEMPLATE_FILE="README.template.md"
           OUTPUT_FILE="README.md"
           TMP_DIR="svc_tmp"
 
+          # Hardcoded repo URLs
           declare -A repos=(
             ["CONFIG_SERVER"]="https://github.com/Ak47-369/bookticket-config-server"
             ["EUREKA_SERVER"]="https://github.com/Ak47-369/bookticket-eureka-server"
@@ -35,18 +43,32 @@ jobs:
             ["NOTIFICATION_SERVICE"]="https://github.com/Ak47-369/bookticket-notification-service"
           )
 
+          SERVICES_ORDER=(
+            "CONFIG_SERVER"
+            "EUREKA_SERVER"
+            "API_GATEWAY"
+            "USER_SERVICE"
+            "MOVIE_SERVICE"
+            "THEATER_SERVICE"
+            "BOOKING_SERVICE"
+            "PAYMENT_SERVICE"
+            "NOTIFICATION_SERVICE"
+          )
+
           echo "📄 Copying template..."
           cp "$TEMPLATE_FILE" "$OUTPUT_FILE"
           echo "" >> "$OUTPUT_FILE"
           echo "## 📦 Microservices Documentation" >> "$OUTPUT_FILE"
           echo "" >> "$OUTPUT_FILE"
 
-          for key in "${!repos[@]}"; do
+          for key in "${SERVICES_ORDER[@]}"; do
             REPO_URL="${repos[$key]}"
             SERVICE_NAME=$(echo "$key" | tr "_" " " | sed 's/\b\(.\)/\u\1/g')
-
+            
             echo "📥 Cloning $SERVICE_NAME ..."
             rm -rf $TMP_DIR
+
+            # Clone public repo (for private, use token)
             git clone "$REPO_URL" $TMP_DIR
 
             SERVICE_README="$TMP_DIR/README.md"
@@ -55,7 +77,8 @@ jobs:
             echo "<summary><strong>📌 $SERVICE_NAME</strong></summary>" >> "$OUTPUT_FILE"
             echo "" >> "$OUTPUT_FILE"
 
-            echo "🔗 **Repository:** $REPO_URL" >> "$OUTPUT_FILE"
+            # GitHub button style link
+            echo "[![GitHub](https://img.shields.io/badge/GitHub-Repository-black?style=for-the-badge&logo=github)]($REPO_URL)" >> "$OUTPUT_FILE"
             echo "" >> "$OUTPUT_FILE"
 
             if [ -f "$SERVICE_README" ]; then
@@ -69,7 +92,7 @@ jobs:
             echo "" >> "$OUTPUT_FILE"
           done
 
-          # Footer
+          # Footer: Contact
           echo "" >> "$OUTPUT_FILE"
           echo "---" >> "$OUTPUT_FILE"
           echo "## Connect with me:" >> "$OUTPUT_FILE"
@@ -77,11 +100,14 @@ jobs:
           echo '<a href="https://www.linkedin.com/in/amitkumar47369/" target="blank"><img align="center" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" height="30" /></a>' >> "$OUTPUT_FILE"
           echo '<a href="https://github.com/Ak47-369" target="blank"><img align="center" src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" height="30" /></a>' >> "$OUTPUT_FILE"
           echo '</p>' >> "$OUTPUT_FILE"
-      
-      - name: Commit & Push README
+
+      - name: Configure Git
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Commit and push changes
+        run: |
           git add README.md
-          git diff-index --quiet HEAD || git commit -m "Auto-sync monorepo README"
+          git commit -m "Auto-sync monorepo README" || echo "No changes to commit"
           git push

@@ -8,12 +8,12 @@ This repository is structured as a monorepo, containing all platform and busines
 
 ## 🚀 Quick Links
 
-| Resource                      | Link                                                                                                                   |
-|-------------------------------|------------------------------------------------------------------------------------------------------------------------|
-| **Monorepo Repository**       | https://github.com/Ak47-369/bookticket-app                                                                             |
-| **Swagger UI**                | https://api-gateway-mtiq.onrender.com/swagger-ui.html                                                                  |
-| **Postman Starter Flow**      | [![Postman Collection](https://img.shields.io/badge/Postman-Import-orange)](REPLACE_WITH_POSTMAN_COLLECTION_COPY_URL)  |                                                                                                                      |
-| **Postman Master Collection** | [![Postman Collection](https://img.shields.io/badge/Postman-Import-orange)](REPLACE_WITH_POSTMAN_COLLECTION_COPY_URL)  |
+| Resource                      | Link                                                                                                                  |
+|-------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| **Monorepo Repository**       | https://github.com/Ak47-369/bookticket-app                                                                            |
+| **Swagger UI**                | https://api-gateway-mtiq.onrender.com/swagger-ui.html                                                                 |
+| **Postman Starter Flow**      | [![Postman Collection](https://img.shields.io/badge/Postman-Import-orange)](https://akydv2627-762592.postman.co/workspace/Amit-yadav's-Workspace~ad787101-1fc6-4550-8c4f-690f01ef3462/flow/6925d0e3b99f1f0014c54e64)  |                                                                                                                      |
+| **Postman Master Collection** | [![Postman Collection](https://img.shields.io/badge/Postman-Import-orange)](REPLACE_WITH_POSTMAN_COLLECTION_COPY_URL) |
 
 ---
 

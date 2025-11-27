@@ -21,6 +21,7 @@ logs/
 *.ipr
 *.env
 *.md
+!README.template.md
 *.log
 
 ### NetBeans ###

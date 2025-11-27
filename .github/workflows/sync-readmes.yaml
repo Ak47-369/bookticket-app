@@ -78,8 +78,7 @@ jobs:
             echo "" >> "$OUTPUT_FILE"
           done
 
-          # Append contact section at the end
-          cat << 'EOF' >> "$OUTPUT_FILE"
+        cat >> "$OUTPUT_FILE" <<EOF
 
 ---
 
@@ -91,11 +90,3 @@ jobs:
 </p>
 
 EOF
-
-      - name: Commit & Push README.md
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add README.md
-          git commit -m "🔄 Auto-update Monorepo README with service READMEs" || echo "No changes to commit"
-          git push

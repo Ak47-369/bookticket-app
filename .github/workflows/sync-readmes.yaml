@@ -1,23 +1,36 @@
-name: Sync External Microservice READMEs
+name: Sync Monorepo README
 
 on:
   push:
-    branches:
-      - main
+    paths:
+      - "README.template.md"
   workflow_dispatch:
+
 permissions:
   contents: write
+
 jobs:
-  sync-readme:
+  build-readme:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Monorepo
+      - name: Checkout monorepo
         uses: actions/checkout@v3
-      - name: Clone External Microservice Repos
-        run: |
-          mkdir microservices
+        with:
+          fetch-depth: 0
 
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Generate README.md
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TEMPLATE_FILE="README.template.md"
+          OUTPUT_FILE="README.md"
+          TMP_DIR="svc_tmp"
+
+          # Hardcoded repo URLs
           declare -A repos=(
             ["CONFIG_SERVER"]="https://github.com/Ak47-369/bookticket-config-server"
             ["EUREKA_SERVER"]="https://github.com/Ak47-369/bookticket-eureka-server"
@@ -30,35 +43,59 @@ jobs:
             ["NOTIFICATION_SERVICE"]="https://github.com/Ak47-369/bookticket-notification-service"
           )
 
+          echo "📄 Copying template..."
+          cp "$TEMPLATE_FILE" "$OUTPUT_FILE"
+          echo "" >> "$OUTPUT_FILE"
+
+          echo "## 📦 Microservices Documentation" >> "$OUTPUT_FILE"
+          echo "" >> "$OUTPUT_FILE"
+
           for key in "${!repos[@]}"; do
-            echo "Cloning ${repos[$key]}"
-            git clone --depth 1 "${repos[$key]}" "microservices/$key"
-          done
+            REPO_URL="${repos[$key]}"
+            SERVICE_NAME=$(echo "$key" | tr "_" " " | sed 's/\b\(.\)/\u\1/g')
 
-      - name: Generate README.md from Template
-        run: |
-          cp README.template.md README.md
+            echo "📥 Cloning $SERVICE_NAME ..."
+            rm -rf $TMP_DIR
+            git clone "https://x-access-token:${GITHUB_TOKEN}@${REPO_URL#https://}" $TMP_DIR -q
 
-          for key in CONFIG_SERVER EUREKA_SERVER API_GATEWAY USER_SERVICE \
-                     MOVIE_SERVICE THEATER_SERVICE BOOKING_SERVICE \
-                     PAYMENT_SERVICE NOTIFICATION_SERVICE
-          do
-            echo "Injecting README for $key"
+            SERVICE_README="$TMP_DIR/README.md"
 
-            if [ -f "microservices/$key/README.md" ]; then
-              CONTENT=$(sed 's/\\/\\\\/g' microservices/$key/README.md | sed ':a;N;$!ba;s/\n/\\n/g')
-              sed -i "s|<!-- INJECT: $key -->|$CONTENT|g" README.md
+            echo "<details>" >> "$OUTPUT_FILE"
+            echo "<summary><strong>📌 $SERVICE_NAME</strong></summary>" >> "$OUTPUT_FILE"
+            echo "" >> "$OUTPUT_FILE"
+
+            echo "🔗 **Repository:** $REPO_URL" >> "$OUTPUT_FILE"
+            echo "" >> "$OUTPUT_FILE"
+
+            if [ -f "$SERVICE_README" ]; then
+              tail -n +1 "$SERVICE_README" >> "$OUTPUT_FILE"
             else
-              sed -i "s|<!-- INJECT: $key -->|⚠️ README.md missing in $key repo|g" README.md
+              echo "_No README.md found in repo_" >> "$OUTPUT_FILE"
             fi
+
+            echo "" >> "$OUTPUT_FILE"
+            echo "</details>" >> "$OUTPUT_FILE"
+            echo "" >> "$OUTPUT_FILE"
           done
 
-      - name: Commit & Push README
+          # Append contact section at the end
+          cat << 'EOF' >> "$OUTPUT_FILE"
+
+---
+
+## Connect with me:
+
+<p align="left">
+<a href="https://www.linkedin.com/in/amitkumar47369/" target="blank"><img align="center" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" height="30" /></a>
+<a href="https://github.com/Ak47-369" target="blank"><img align="center" src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" height="30" /></a>
+</p>
+
+EOF
+
+      - name: Commit & Push README.md
         run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-
-          git add README.md || true
-          git commit -m "Auto-sync README (external microservice docs)" || exit 0
-          git push origin main
-
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "🔄 Auto-update Monorepo README with service READMEs" || echo "No changes to commit"
+          git push

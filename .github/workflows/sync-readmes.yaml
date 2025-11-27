@@ -16,7 +16,6 @@ jobs:
 
       - name: Build README.md from template + external repos
         run: |
-          # Start README from template
           cp README.template.md README.md
 
           echo "" >> README.md
@@ -28,7 +27,7 @@ jobs:
           fetch_readme () {
             RAW_URL=$1
             NAME=$2
-          
+
             echo "## 🔹 $NAME" >> README.md
             echo "" >> README.md
 
@@ -45,7 +44,6 @@ jobs:
             echo "" >> README.md
           }
 
-          # Add your services here (modify names if needed)
           fetch_readme "https://raw.githubusercontent.com/Ak47-369/bookticket-config-server/main/README.md" "Config Server"
           fetch_readme "https://raw.githubusercontent.com/Ak47-369/bookticket-eureka-server/main/README.md" "Service Registry"
           fetch_readme "https://raw.githubusercontent.com/Ak47-369/bookticket-api-gateway/main/README.md" "API Gateway"

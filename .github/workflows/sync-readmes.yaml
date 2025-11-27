@@ -16,21 +16,13 @@ jobs:
     steps:
       - name: Checkout monorepo
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      - name: Install jq
-        run: sudo apt-get install -y jq
 
       - name: Generate README.md
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           TEMPLATE_FILE="README.template.md"
           OUTPUT_FILE="README.md"
           TMP_DIR="svc_tmp"
 
-          # Hardcoded repo URLs
           declare -A repos=(
             ["CONFIG_SERVER"]="https://github.com/Ak47-369/bookticket-config-server"
             ["EUREKA_SERVER"]="https://github.com/Ak47-369/bookticket-eureka-server"
@@ -46,7 +38,6 @@ jobs:
           echo "📄 Copying template..."
           cp "$TEMPLATE_FILE" "$OUTPUT_FILE"
           echo "" >> "$OUTPUT_FILE"
-
           echo "## 📦 Microservices Documentation" >> "$OUTPUT_FILE"
           echo "" >> "$OUTPUT_FILE"
 
@@ -56,7 +47,7 @@ jobs:
 
             echo "📥 Cloning $SERVICE_NAME ..."
             rm -rf $TMP_DIR
-            git clone "https://x-access-token:${GITHUB_TOKEN}@${REPO_URL#https://}" $TMP_DIR -q
+            git clone "$REPO_URL" $TMP_DIR
 
             SERVICE_README="$TMP_DIR/README.md"
 
@@ -68,7 +59,7 @@ jobs:
             echo "" >> "$OUTPUT_FILE"
 
             if [ -f "$SERVICE_README" ]; then
-              tail -n +1 "$SERVICE_README" >> "$OUTPUT_FILE"
+              cat "$SERVICE_README" >> "$OUTPUT_FILE"
             else
               echo "_No README.md found in repo_" >> "$OUTPUT_FILE"
             fi
@@ -77,11 +68,11 @@ jobs:
             echo "</details>" >> "$OUTPUT_FILE"
             echo "" >> "$OUTPUT_FILE"
           done
+
+          # Footer
           echo "" >> "$OUTPUT_FILE"
           echo "---" >> "$OUTPUT_FILE"
-          echo "" >> "$OUTPUT_FILE"
           echo "## Connect with me:" >> "$OUTPUT_FILE"
-          echo "" >> "$OUTPUT_FILE"
           echo '<p align="left">' >> "$OUTPUT_FILE"
           echo '<a href="https://www.linkedin.com/in/amitkumar47369/" target="blank"><img align="center" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" height="30" /></a>' >> "$OUTPUT_FILE"
           echo '<a href="https://github.com/Ak47-369" target="blank"><img align="center" src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" height="30" /></a>' >> "$OUTPUT_FILE"

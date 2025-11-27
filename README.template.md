@@ -41,24 +41,4 @@ This repository is structured as a monorepo, containing all platform and busines
 3. Execute the **full master Postman collection**
 
 
-# 📦 Microservices Documentation (Auto-injected)
 
-Each service section below is automatically injected from the microservice repositories.
-
-👉 *Click any microservice to expand its full documentation.*
-
-<!-- INJECT_MICROSERVICES -->
-
----
-
-## Connect with me:
-
-<p align="left">
-<a href="https://www.linkedin.com/in/amitkumar47369/" target="blank">
-<img align="center" src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" height="30" />
-</a>
-
-<a href="https://github.com/Ak47-369" target="blank">
-<img align="center" src="https://img.shields.io/badge/GitHub-100000?style=for-the-badge&logo=github&logoColor=white" height="30" />
-</a>
-</p>

@@ -41,12 +41,12 @@ public class AuthenticationController {
     }
 
     @Operation(
-            summary = "Register a new user",
+            summary = "Register a new user with default role USER",
             description = "Creates a new user account with the provided details and returns a JWT token",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = CreateUserRequest.class),
+                            schema = @Schema(implementation = RegisterRequest.class),
                             examples = @ExampleObject(
                                     value = "{\"email\": \"user@example.com\", \"password\": \"password123\", \"name\": \"John Doe\"}"
                             )
@@ -109,8 +109,8 @@ public class AuthenticationController {
             )
     })
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody CreateUserRequest createUserRequest) {
-        UserSummary userSummary = userService.createUser(createUserRequest);
+    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
+        UserSummary userSummary = userService.createUser(registerRequest);
         final CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(userSummary.email());
         final String jwt = jwtUtils.generateToken(userDetails);
         final long expiresIn = jwtUtils.extractExpiration(jwt).getTime();

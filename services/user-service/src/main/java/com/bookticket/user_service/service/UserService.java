@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Slf4j
@@ -28,12 +29,32 @@ public class UserService {
     }
 
     @Transactional
-    public UserSummary createUser(CreateUserRequest createUserRequest) {
-        String lowerCaseEmail = createUserRequest.email().toLowerCase();
-        if (userRepository.existsByUsername(createUserRequest.username())) {
+    public UserSummary createUser(RegisterRequest registerRequest) {
+        String lowerCaseEmail = registerRequest.email().toLowerCase();
+        if (Boolean.TRUE.equals(userRepository.existsByUsername(registerRequest.username()))) {
             throw new IllegalStateException("Username already exists");
         }
-        if (userRepository.existsByEmail(lowerCaseEmail)) {
+        if (Boolean.TRUE.equals(userRepository.existsByEmail(lowerCaseEmail))) {
+            throw new IllegalStateException("Email already exists");
+        }
+
+        User user = new User();
+        user.setUsername(registerRequest.username());
+        user.setEmail(lowerCaseEmail);
+        user.setPassword(passwordEncoder.encode(registerRequest.password()));
+        user.setRoles(Set.of(UserRole.USER));
+        User savedUser = userRepository.save(user);
+        log.info("User created Successfully: {}", user.getUsername());
+        return UserSummary.fromUser(savedUser);
+    }
+
+    @Transactional
+    public UserSummary createUserWithRoles(CreateUserRequest createUserRequest) {
+        String lowerCaseEmail = createUserRequest.email().toLowerCase();
+        if (Boolean.TRUE.equals(userRepository.existsByUsername(createUserRequest.username()))) {
+            throw new IllegalStateException("Username already exists");
+        }
+        if (Boolean.TRUE.equals(userRepository.existsByEmail(lowerCaseEmail))) {
             throw new IllegalStateException("Email already exists");
         }
 
@@ -41,7 +62,7 @@ public class UserService {
         user.setUsername(createUserRequest.username());
         user.setEmail(lowerCaseEmail);
         user.setPassword(passwordEncoder.encode(createUserRequest.password()));
-        user.setRoles(Set.of(UserRole.USER, UserRole.ADMIN));// Temp Changes
+
         User savedUser = userRepository.save(user);
         log.info("User created Successfully: {}", user.getUsername());
         return UserSummary.fromUser(savedUser);
@@ -75,8 +96,6 @@ public class UserService {
             }
             user.setEmail(lowerCaseEmail);
         }
-
-        // TODO - Add password update
 
         User savedUser = userRepository.save(user);
         UserSummary userSummary = UserSummary.fromUser(savedUser);

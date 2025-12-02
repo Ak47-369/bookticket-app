@@ -21,7 +21,7 @@ public class EmailService {
     private final String senderName;
 
     public EmailService(TransactionalEmailsApi brevoApi,
-                        @Value("${spring.mail.username}") String senderEmail,
+                        @Value("${spring.mail.username:bookticket.com@gmail.com}") String senderEmail,
                         @Value("${brevo.sender.name:BookTicket}") String senderName) {
         this.brevoApi = brevoApi;
         this.senderEmail = senderEmail;

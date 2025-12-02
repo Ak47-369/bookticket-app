@@ -22,7 +22,7 @@ public class OpenAPIConfig {
     private static final String SCHEME = "bearer";
     private static final String BEARER_FORMAT = "JWT";
 
-    @Value("${api-gateway.public-url}")
+    @Value("${api-gateway.public-url:http://localhost:8080}")
     private String gatewayPublicUrl;
 
     @Bean

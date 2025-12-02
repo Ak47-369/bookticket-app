@@ -62,7 +62,7 @@ public class UserService {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User ", "email", email));
 
         if (updateUserRequest.username() != null && !user.getUsername().equals(updateUserRequest.username())) {
-            if (userRepository.existsByUsername(updateUserRequest.username())) {
+            if (Boolean.TRUE.equals(userRepository.existsByUsername(updateUserRequest.username()))) {
                 throw new IllegalStateException("Username already exists");
             }
             user.setUsername(updateUserRequest.username());
@@ -70,7 +70,7 @@ public class UserService {
 
         if (updateUserRequest.email() != null && !user.getEmail().equals(updateUserRequest.email())) {
             String lowerCaseEmail = updateUserRequest.email().toLowerCase();
-            if (userRepository.existsByEmail(lowerCaseEmail)) {
+            if (Boolean.TRUE.equals(userRepository.existsByEmail(lowerCaseEmail))) {
                 throw new IllegalStateException("Email already exists");
             }
             user.setEmail(lowerCaseEmail);

@@ -182,13 +182,13 @@ public class UserController {
             )
     })
     @PutMapping("/update")
-    public ResponseEntity<JwtResponse> updateUserByUsername(
+    public ResponseEntity<?> updateUserByUsername(
             @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails,
             @Valid @RequestBody UpdateUserRequest updateUserRequest
     ) {
         String email = userDetails.getUsername();
-        JwtResponse jwtResponse = userService.updateUserByEmail(email, updateUserRequest);
-        return ResponseEntity.ok(jwtResponse);
+        LoginResponse loginResponse = userService.updateUserByEmail(email, updateUserRequest);
+        return ResponseEntity.ok(loginResponse);
     }
 
     @Operation(

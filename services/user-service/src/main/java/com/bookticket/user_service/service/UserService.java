@@ -58,7 +58,7 @@ public class UserService {
     }
 
     @Transactional
-    public JwtResponse updateUserByEmail(String email, UpdateUserRequest updateUserRequest) {
+    public LoginResponse updateUserByEmail(String email, UpdateUserRequest updateUserRequest) {
         User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User ", "email", email));
 
         if (updateUserRequest.username() != null && !user.getUsername().equals(updateUserRequest.username())) {
@@ -79,13 +79,14 @@ public class UserService {
         // TODO - Add password update
 
         User savedUser = userRepository.save(user);
+        UserSummary userSummary = UserSummary.fromUser(savedUser);
         log.info("User updated Successfully: {}", savedUser.getUsername());
 
         final CustomUserDetails userDetails = new CustomUserDetails(savedUser);
         final String jwt = jwtUtils.generateToken(userDetails);
         final long expiresIn = jwtUtils.extractExpiration(jwt).getTime();
 
-        return new JwtResponse(jwt, expiresIn);
+        return new LoginResponse(userSummary, new JwtResponse(jwt, expiresIn));
     }
 
     @Transactional

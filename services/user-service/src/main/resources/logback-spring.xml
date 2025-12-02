@@ -55,7 +55,7 @@
             <appender-ref ref="CONSOLE_PRETTY"/>
             <appender-ref ref="LOKI"/>
         </root>
-        
+
         <logger name="com.bookticket.${service_name}" level="DEBUG" additivity="false">
             <appender-ref ref="CONSOLE_PRETTY"/>
             <appender-ref ref="LOKI"/>
@@ -67,7 +67,7 @@
             <appender-ref ref="CONSOLE_JSON"/>
             <appender-ref ref="LOKI"/>
         </root>
-        
+
         <logger name="com.bookticket.${service_name}" level="INFO" additivity="false">
             <appender-ref ref="CONSOLE_JSON"/>
             <appender-ref ref="LOKI"/>

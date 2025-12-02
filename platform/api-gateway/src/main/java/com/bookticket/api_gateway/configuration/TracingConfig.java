@@ -23,18 +23,15 @@ public class TracingConfig {
 
     @Bean
     public GlobalFilter traceIdResponseFilter() {
-        return (exchange, chain) -> {
-            // Get the current span from the tracer context
-            Span currentSpan = tracer.currentSpan();
+        return (exchange, chain) -> chain.filter(exchange)
+                .then(Mono.fromRunnable(() -> {
+                    Span currentSpan = tracer.currentSpan();
 
-            if (currentSpan != null) {
-                // Add the traceId and spanId to the response headers
-                exchange.getResponse().getHeaders().add("X-Trace-ID", currentSpan.context().traceId());
-                exchange.getResponse().getHeaders().add("X-Span-ID", currentSpan.context().spanId());
-            }
-
-            // Continue the filter chain
-            return chain.filter(exchange);
-        };
+                    if (currentSpan != null) {
+                        // Add the traceId and spanId to the response headers
+                        exchange.getResponse().getHeaders().add("X-Trace-ID", currentSpan.context().traceId());
+                        exchange.getResponse().getHeaders().add("X-Span-ID", currentSpan.context().spanId());
+                    }
+                }));
     }
 }

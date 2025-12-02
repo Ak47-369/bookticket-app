@@ -1,5 +1,6 @@
 package com.bookticket.user_service.entity;
 
+import com.bookticket.user_service.entity.converter.RoleSetConverter;
 import com.bookticket.user_service.enums.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -40,6 +41,9 @@ public class User {
     @Email
     @Column(unique = true, nullable = false)
     private String email;
+    @Convert(converter = RoleSetConverter.class)
+    @Column(nullable = false, name = "roles")
+    @Enumerated(EnumType.STRING)
     private Set<UserRole> roles = new HashSet<>();
 
     // Auditing Fields

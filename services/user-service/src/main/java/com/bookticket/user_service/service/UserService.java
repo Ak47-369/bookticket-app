@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -42,7 +43,7 @@ public class UserService {
         user.setUsername(registerRequest.username());
         user.setEmail(lowerCaseEmail);
         user.setPassword(passwordEncoder.encode(registerRequest.password()));
-        user.setRoles(Set.of(UserRole.USER));
+        user.setRoles(Set.of(UserRole.USER)); // Default Role
         User savedUser = userRepository.save(user);
         log.info("User created Successfully: {}", user.getUsername());
         return UserSummary.fromUser(savedUser);
@@ -62,7 +63,7 @@ public class UserService {
         user.setUsername(createUserRequest.username());
         user.setEmail(lowerCaseEmail);
         user.setPassword(passwordEncoder.encode(createUserRequest.password()));
-
+        user.setRoles(new HashSet<>(createUserRequest.roles()));
         User savedUser = userRepository.save(user);
         log.info("User created Successfully: {}", user.getUsername());
         return UserSummary.fromUser(savedUser);
@@ -106,6 +107,20 @@ public class UserService {
         final long expiresIn = jwtUtils.extractExpiration(jwt).getTime();
 
         return new LoginResponse(userSummary, new JwtResponse(jwt, expiresIn));
+    }
+
+    @Transactional
+    public void updatePasswordByEmail(String email, UpdatePasswordRequest updatePasswordRequest) {
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new ResourceNotFoundException("User", "email", email));
+        if (!passwordEncoder.matches(updatePasswordRequest.currentPassword(), user.getPassword())) {
+            throw new IllegalStateException("Current password is incorrect");
+        }
+        if (!updatePasswordRequest.newPassword().equals(updatePasswordRequest.confirmNewPassword())) {
+            throw new IllegalStateException("New password and confirm password do not match");
+        }
+        user.setPassword(passwordEncoder.encode(updatePasswordRequest.newPassword()));
+        userRepository.save(user);
+        log.info("Password updated Successfully for user: {}", email);
     }
 
     @Transactional

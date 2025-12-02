@@ -31,7 +31,22 @@ public class UserController {
 
     @Operation(
             summary = "Get current user profile",
-            description = "Retrieves the profile of the currently authenticated user"
+            description = "Retrieves the profile of the currently authenticated user",
+            security = @SecurityRequirement(name = "bearerAuth"),
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = UpdatePasswordRequest.class),
+                            examples = @ExampleObject(
+                                    value = """
+                {
+                    "currentPassword": "oldPassword123",
+                    "newPassword": "newSecurePassword456",
+                    "confirmNewPassword": "newSecurePassword456"
+                }"""
+                            )
+                    )
+            )
     )
     @ApiResponses(value = {
             @ApiResponse(
@@ -74,6 +89,38 @@ public class UserController {
     ) {
         String email = userDetails.getUsername();
         return ResponseEntity.ok(userService.getUserByEmail(email));
+    }
+
+    @Operation(
+            summary = "Change user password",
+            description = "Allows authenticated users to change their own password. " +
+                    "Requires the current password for verification.",
+            security = @SecurityRequirement(name = "bearerAuth")
+    )
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Password changed successfully",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Invalid input data (e.g., current password incorrect, passwords don't match)",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "401",
+                    description = "Unauthorized - Authentication required",
+                    content = @Content
+            )
+    })
+    @PostMapping("/me/change-password")
+    public ResponseEntity<String> changePassword(
+            @Parameter(hidden = true) @AuthenticationPrincipal UserDetails userDetails,
+            @Valid @RequestBody UpdatePasswordRequest updatePasswordRequest
+    ) {
+        userService.updatePasswordByEmail(userDetails.getUsername(), updatePasswordRequest);
+        return ResponseEntity.ok("Password changed successfully");
     }
 
     @Operation(

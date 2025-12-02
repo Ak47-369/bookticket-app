@@ -1,19 +1,36 @@
-# BookTicket: A Comprehensive Microservices Project
+# BookTicket: A Microservices-Based Movie Ticket Booking Application
 
-Welcome to BookTicket, a complete microservices-based application for booking movie tickets. This system is built using Spring Boot and the Spring Cloud ecosystem, demonstrating a wide range of patterns and technologies used in modern, cloud-native distributed systems.
+Welcome to BookTicket! This is a personal project I built to learn and demonstrate the core principles of building a real-world, distributed application using Java, Spring Boot, and the Spring Cloud ecosystem.
 
-This repository is structured as a monorepo, containing all platform and business logic services.
+The goal of this project was to move beyond a simple monolithic application and tackle the challenges of a microservices architecture, including:
+-   **Service Discovery:** How do services find each other in a dynamic environment?
+-   **Centralized Configuration:** How do you manage configuration for multiple services without duplicating properties?
+-   **API Gateway:** How do you create a single, secure entry point for a frontend application? 
+-   **Asynchronous Communication:** How do you handle tasks like sending a confirmation email without slowing down the user's booking process?
 
----
+
+
+## The Component Architecture Diagram
+
+### System Architecture Overview
+<img width="2781" height="1648" alt="Overview" src="https://github.com/user-attachments/assets/c29798a9-6dd6-484c-bb12-f3988ff093da" />
+
+
+## Sequence Diagram 
+### End-to-End User Flow : Booking a Ticket
+<img width="3820" height="1866" alt="Sequence" src="https://github.com/user-attachments/assets/cd8198be-6431-4f4b-abf8-b48a117cc8e5" />
+
+
+
 
 ## 🚀 Quick Links
 
-| Resource                      | Link                                                                                                                   |
-|-------------------------------|------------------------------------------------------------------------------------------------------------------------|
-| **Monorepo Repository**       | https://github.com/Ak47-369/bookticket-app                                                                             |
-| **Swagger UI**                | https://api-gateway-mtiq.onrender.com/swagger-ui.html                                                                  |
-| **Postman Starter Flow**      | [![Postman Collection](https://img.shields.io/badge/Postman-Import-orange)](REPLACE_WITH_POSTMAN_COLLECTION_COPY_URL)  |                                                                                                                      |
-| **Postman Master Collection** | [![Postman Collection](https://img.shields.io/badge/Postman-Import-orange)](REPLACE_WITH_POSTMAN_COLLECTION_COPY_URL)  |
+| Resource                      | Link                                                                                                                  |
+|-------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| **Monorepo Repository**       | https://github.com/Ak47-369/bookticket-app                                                                            |
+| **Swagger UI**                | https://api-gateway-mtiq.onrender.com/swagger-ui.html                                                                 |
+| **Postman Starter Flow**      | [![Postman Collection](https://img.shields.io/badge/Postman-Import-orange?style=for-the-badge)](https://akydv2627-762592.postman.co/workspace/Amit-yadav's-Workspace~ad787101-1fc6-4550-8c4f-690f01ef3462/flow/6925d0e3b99f1f0014c54e64)  [![Start Services](https://img.shields.io/badge/Start%20Services-Click%20Here-brightgreen?style=for-the-badge)](https://ak47-369.github.io/bookticket-app/) |                                                                                                                      |
+| **Postman Master Collection** | [![Postman Collection](https://img.shields.io/badge/Postman-Import-orange?style=for-the-badge)](REPLACE_WITH_POSTMAN_COLLECTION_COPY_URL) |
 
 ---
 

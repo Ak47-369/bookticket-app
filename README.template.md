@@ -30,7 +30,7 @@ The goal of this project was to move beyond a simple monolithic application and 
 | **Monorepo Repository**       | https://github.com/Ak47-369/bookticket-app                                                                            |
 | **Swagger UI**                | https://api-gateway-mtiq.onrender.com/swagger-ui.html                                                                 |
 | **Postman Starter Flow**      | [![Postman Collection](https://img.shields.io/badge/Postman-Import-orange?style=for-the-badge)](https://akydv2627-762592.postman.co/workspace/Amit-yadav's-Workspace~ad787101-1fc6-4550-8c4f-690f01ef3462/flow/6925d0e3b99f1f0014c54e64)  [![Start Services](https://img.shields.io/badge/Start%20Services-Click%20Here-brightgreen?style=for-the-badge)](https://ak47-369.github.io/bookticket-app/) |                                                                                                                      |
-| **Postman Master Collection** | [![Postman Collection](https://img.shields.io/badge/Postman-Import-orange?style=for-the-badge)](REPLACE_WITH_POSTMAN_COLLECTION_COPY_URL) |
+| **Postman Master Collection** | [![Postman Collection](https://img.shields.io/badge/Postman-Import-orange?style=for-the-badge)](https://www.postman.com/akydv2627-762592/workspace/public-workspace/collection/49707974-a1396aa0-1c7a-47a8-8fc1-a93bb413dd57?action=share&creator=49707974&active-environment=49707974-661e27fa-1f96-4958-a3a3-86ae66fa321c) |
 
 ---
 

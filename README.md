@@ -30,7 +30,7 @@ The goal of this project was to move beyond a simple monolithic application and 
 | **Monorepo Repository**       | https://github.com/Ak47-369/bookticket-app                                                                            |
 | **Swagger UI**                | https://api-gateway-mtiq.onrender.com/swagger-ui.html                                                                 |
 | **Postman Starter Flow**      | [![Postman Collection](https://img.shields.io/badge/Postman-Import-orange?style=for-the-badge)](https://akydv2627-762592.postman.co/workspace/Amit-yadav's-Workspace~ad787101-1fc6-4550-8c4f-690f01ef3462/flow/6925d0e3b99f1f0014c54e64)  [![Start Services](https://img.shields.io/badge/Start%20Services-Click%20Here-brightgreen?style=for-the-badge)](https://ak47-369.github.io/bookticket-app/) |                                                                                                                      |
-| **Postman Master Collection** | [![Postman Collection](https://img.shields.io/badge/Postman-Import-orange?style=for-the-badge)](REPLACE_WITH_POSTMAN_COLLECTION_COPY_URL) |
+| **Postman Master Collection** | [![Postman Collection](https://img.shields.io/badge/Postman-Import-orange?style=for-the-badge)](https://www.postman.com/akydv2627-762592/workspace/public-workspace/collection/49707974-a1396aa0-1c7a-47a8-8fc1-a93bb413dd57?action=share&creator=49707974&active-environment=49707974-661e27fa-1f96-4958-a3a3-86ae66fa321c) |
 
 ---
 
@@ -225,10 +225,11 @@ The **User Service** is a core microservice responsible for managing all aspects
 
 ## Core Responsibilities
 
--   **User Registration:** Handles the creation of new user accounts.
--   **Authentication:** Manages user login and, upon successful authentication, generates and signs JSON Web Tokens (JWTs).
--   **Password Management:** Securely stores user passwords using strong hashing algorithms (BCrypt).
+-   **Public User Registration:** Handles the public creation of new user accounts with a default `USER` role.
+-   **Authentication & Token Generation:** Manages user login and generates signed JSON Web Tokens (JWTs) for stateless authentication.
+-   **Secure Password Management:** Handles secure password updates and stores all user passwords using the strong BCrypt hashing algorithm.
 -   **User Profile Management:** Provides endpoints for users to view and manage their own profile information.
+-   **Administrative User Management:** Provides protected endpoints for administrators to create users with elevated privileges (e.g., `ADMIN`, `THEATER_OWNER`).
 
 ## Architecture
 <img width="1473" height="1642" alt="User Service-2025-11-26-191334" src="https://github.com/user-attachments/assets/b3322aed-a237-40f5-af9a-15f2cbfe6c57" />
@@ -255,21 +256,27 @@ The **User Service** is a core microservice responsible for managing all aspects
 
 ## API Endpoints
 
-The service's endpoints are exposed through the API Gateway.
+The service's endpoints are exposed through the API Gateway and are organized by their required access level.
 
 ### Public Authentication Endpoints
-These endpoints are used for user registration and login and are publicly accessible.
+*(No authentication required)*
 
--   `POST /api/v1/auth/register`: Creates a new user account.
+-   `POST /api/v1/auth/register`: Creates a new user account with the default `USER` role.
 -   `POST /api/v1/auth/login`: Authenticates a user with their email and password and returns a JWT upon success.
 
 ### Secured User Endpoints
-These endpoints require a valid JWT in the `Authorization` header for access.
+*(Requires authentication - for a user to manage their own account)*
 
 -   `GET /api/v1/users/me`: Retrieves the profile information for the currently authenticated user.
+-   `POST /api/v1/users/me/change-password`: Allows the currently authenticated user to change their own password by providing their current and new passwords.
+
+### Administrative Endpoints
+*(Requires authentication and `ADMIN` role)*
+
+-   `POST /api/v1/admin/users`: Creates a new user with a specified set of roles (e.g., `ADMIN`, `THEATER_OWNER`). This is for administrative use only.
+-   `GET /api/v1/users`: Fetches a list of all users in the system.
 -   `GET /api/v1/users/{id}`: Retrieves the public profile information for any user by their ID.
--   `GET /api/v1/users`: Fetches a list of all users. (Requires `ADMIN` role).
--   `DELETE /api/v1/users/{id}`: Deletes a user account. (Requires `ADMIN` role).
+-   `DELETE /api/v1/users/{id}`: Deletes a user account by their ID.
 
 </details>
 

@@ -19,7 +19,7 @@ public class HeaderPropagationInterceptor implements ClientHttpRequestIntercepto
             String userId = attributes.getRequest().getHeader("X-User-Id");
             String userRoles = attributes.getRequest().getHeader("X-User-Roles");
             String username = attributes.getRequest().getHeader("X-User-Name");
-            userRoles += ",SERVICE_ACCOUNT"; // Service To Service communication
+            userRoles += ",ROLE_SERVICE_ACCOUNT"; // Service To Service communication
             
             if (userId != null) {
                 request.getHeaders().set("X-User-Id", userId);

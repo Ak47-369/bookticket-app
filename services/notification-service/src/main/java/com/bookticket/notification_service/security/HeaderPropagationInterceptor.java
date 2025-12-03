@@ -36,9 +36,9 @@ public class HeaderPropagationInterceptor implements ClientHttpRequestIntercepto
 
         // For service-to-service communication, always use SERVICE_ACCOUNT role
         if (userRoles != null) {
-            userRoles += ",SERVICE_ACCOUNT";
+            userRoles += ",ROLE_SERVICE_ACCOUNT";
         } else {
-            userRoles = "SERVICE_ACCOUNT";
+            userRoles = "ROLE_SERVICE_ACCOUNT";
         }
 
         // Add headers to the outgoing request

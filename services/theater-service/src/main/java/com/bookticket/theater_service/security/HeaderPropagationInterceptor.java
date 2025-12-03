@@ -24,7 +24,7 @@ public class HeaderPropagationInterceptor implements ClientHttpRequestIntercepto
 
             // Fix: Only append SERVICE_ACCOUNT if userRoles is not null
             if (userRoles != null) {
-                userRoles = userRoles + ",SERVICE_ACCOUNT"; // Service To Service communication
+                userRoles = userRoles + ",ROLE_SERVICE_ACCOUNT"; // Service To Service communication
             } else {
                 log.warn("HeaderPropagationInterceptor - X-User-Roles is null, cannot add SERVICE_ACCOUNT");
             }

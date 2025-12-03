@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -17,11 +18,10 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
 @RestController
 @RequestMapping("/api/v1/auth")
 @Tag(name = "Authentication", description = "Authentication API for user registration and login")
@@ -42,71 +42,26 @@ public class AuthenticationController {
 
     @Operation(
             summary = "Register a new user with default role USER",
-            description = "Creates a new user account with the provided details and returns a JWT token",
+            description = "Creates a new user account with the provided details and returns a JWT token.",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "The user's details for registration.",
+                    required = true,
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = RegisterRequest.class),
                             examples = @ExampleObject(
-                                    value = "{\"email\": \"user@example.com\", \"password\": \"password123\", \"name\": \"John Doe\"}"
+                                    name = "Standard User Registration",
+                                    summary = "Example for registering a new user",
+                                    value = "{\"username\": \"johndoe\", \"email\": \"john.doe@example.com\", \"password\": \"password123\"}"
                             )
                     )
             )
     )
     @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "User registered successfully",
-                    content = @Content(
-                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = LoginResponse.class)
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Invalid input data",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "409",
-                    description = "Email already exists",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "Internal server error",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "503",
-                    description = "Service unavailable",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "504",
-                    description = "Gateway timeout",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "429",
-                    description = "Too many requests",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Unauthorized",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Not found",
-                    content = @Content
-            )
+            @ApiResponse(responseCode = "200", description = "User registered successfully", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = LoginResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Invalid input data", content = @Content),
+            @ApiResponse(responseCode = "409", description = "Email already exists", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     })
     @PostMapping("/register")
     public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
@@ -119,67 +74,28 @@ public class AuthenticationController {
     }
 
     @Operation(
-            summary = "Authenticate user",
-            description = "Authenticates a user with email and password and returns a JWT token",
+            summary = "Authenticate user and get a token",
+            description = "Authenticates a user with their email and password and returns a JWT token.",
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "The user's credentials for login.",
+                    required = true,
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = LoginRequest.class),
                             examples = @ExampleObject(
-                                    value = "{\"email\": \"user@example.com\", \"password\": \"password123\"}"
+                                    name = "User Login",
+                                    summary = "Example for user authentication",
+                                    value = "{\"email\": \"john.doe@example.com\", \"password\": \"password123\"}"
                             )
                     )
             )
     )
     @ApiResponses(value = {
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Authentication successful",
-                    content = @Content(
-                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = JwtResponse.class)
-                    )
-            ),
-            @ApiResponse(
-                    responseCode = "401",
-                    description = "Invalid credentials",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "400",
-                    description = "Invalid input data",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "User not found",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "500",
-                    description = "Internal server error",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "503",
-                    description = "Service unavailable",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "504",
-                    description = "Gateway timeout",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "429",
-                    description = "Too many requests",
-                    content = @Content
-            ),
-            @ApiResponse(
-                    responseCode = "403",
-                    description = "Forbidden",
-                    content = @Content
-            )
+            @ApiResponse(responseCode = "200", description = "Authentication successful", content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE, schema = @Schema(implementation = JwtResponse.class))),
+            @ApiResponse(responseCode = "401", description = "Invalid credentials", content = @Content),
+            @ApiResponse(responseCode = "400", description = "Invalid input data", content = @Content),
+            @ApiResponse(responseCode = "404", description = "User not found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     })
     @PostMapping("/login")
     public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {

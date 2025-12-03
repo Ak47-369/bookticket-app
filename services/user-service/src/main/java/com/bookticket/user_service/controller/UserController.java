@@ -7,7 +7,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.parameters.RequestBody as OpenApiRequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -50,7 +49,7 @@ public class UserController {
     @Operation(
             summary = "Change current user's password",
             description = "Allows an authenticated user to change their own password. Requires the current password for verification.",
-            requestBody = @OpenApiRequestBody(
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "The user's current and new password details.",
                     required = true,
                     content = @Content(
@@ -81,7 +80,7 @@ public class UserController {
     @Operation(
             summary = "Update current user profile",
             description = "Updates the profile information (e.g., username) of the currently authenticated user.",
-            requestBody = @OpenApiRequestBody(
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "The updated user profile information.",
                     required = true,
                     content = @Content(

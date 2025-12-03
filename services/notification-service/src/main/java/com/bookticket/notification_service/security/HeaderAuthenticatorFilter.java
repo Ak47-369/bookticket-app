@@ -29,7 +29,7 @@ public class HeaderAuthenticatorFilter extends OncePerRequestFilter {
 
                 List<SimpleGrantedAuthority> authorities = Arrays.stream(roles.split(","))
                         .map(String::trim)
-                        .map(role -> new SimpleGrantedAuthority("ROLE_" + role))
+                        .map(SimpleGrantedAuthority::new)
                         .toList();
 
                 // Create UserPrincipal with userId and username

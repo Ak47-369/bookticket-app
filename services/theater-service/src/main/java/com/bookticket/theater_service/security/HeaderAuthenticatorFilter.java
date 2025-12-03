@@ -27,7 +27,7 @@ public class HeaderAuthenticatorFilter  extends OncePerRequestFilter {
         if (id != null  && roles != null) {
             List<SimpleGrantedAuthority> authorities = Arrays.stream(roles.split(","))
                     .map(String::trim)
-                    .map(role ->new SimpleGrantedAuthority("ROLE_" + role))
+                    .map(SimpleGrantedAuthority::new)
                     .toList();
 
             // Create a new authentication object

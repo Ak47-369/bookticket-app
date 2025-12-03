@@ -39,7 +39,7 @@ public class SeatService {
 
     public List<SeatTemplateResponse> getSeatTemplateByScreenId(Long screenId) {
         return seatRepository.findByScreenId(screenId).stream()
-                .map(seat -> new SeatTemplateResponse(seat.getSeatNumber(), seat.getSeatType().name(), seat.getPrice()))
+                .map(seat -> new SeatTemplateResponse(seat.getId(),seat.getSeatNumber(), seat.getSeatType().name(), seat.getPrice()))
                 .toList();
     }
 
@@ -84,7 +84,7 @@ public class SeatService {
 
         // Map to response
         return savedSeats.stream()
-                .map(seat -> new SeatTemplateResponse(seat.getSeatNumber(), seat.getSeatType().name(), seat.getPrice()))
+                .map(seat -> new SeatTemplateResponse(seat.getId(),seat.getSeatNumber(), seat.getSeatType().name(), seat.getPrice()))
                 .toList();
     }
 
@@ -100,7 +100,7 @@ public class SeatService {
 
         log.info("Updated seat price for seat id: {} in screen id: {} to {}", seatId, screenId, price);
         seat.setPrice(price); // Update local object for response
-        return new SeatTemplateResponse(seat.getSeatNumber(), seat.getSeatType().name(), price);
+        return new SeatTemplateResponse(seatId,seat.getSeatNumber(), seat.getSeatType().name(), price);
     }
 
     @Transactional
@@ -122,7 +122,7 @@ public class SeatService {
 
         log.info("Updated seat type for seat id: {} in screen id: {} to {}", seatId, screenId, seatType);
         seat.setSeatType(seatTypeEnum); // Update local object for response
-        return new SeatTemplateResponse(seat.getSeatNumber(), seatTypeEnum.name(), seat.getPrice());
+        return new SeatTemplateResponse(seatId,seat.getSeatNumber(), seatTypeEnum.name(), seat.getPrice());
     }
 
     @Transactional
@@ -183,7 +183,7 @@ public class SeatService {
 
         // Map to response
         return savedSeats.stream()
-                .map(seat -> new SeatTemplateResponse(seat.getSeatNumber(), seat.getSeatType().name(), seat.getPrice()))
+                .map(seat -> new SeatTemplateResponse(seat.getId(),seat.getSeatNumber(), seat.getSeatType().name(), seat.getPrice()))
                 .toList();
     }
 

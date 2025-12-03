@@ -256,7 +256,7 @@ public class SeatService {
                     releaseSeatsRequest.showSeatIds().size(),
                     updatedCount
             );
-            throw new RuntimeException("Failed to release seats");
+//            throw new RuntimeException("Failed to release seats");
         }
 
         log.info("Successfully released {} seats for show id: {}", updatedCount, releaseSeatsRequest.showId());

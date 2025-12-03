@@ -68,7 +68,7 @@ public class TheaterService {
                 .retrieve()
                 .onStatus(HttpStatusCode::isError, (request, response) -> {
                     log.error("Error while Releasing Seats : Service Call to Theater Service Failed");
-                    throw new RuntimeException("Error while Releasing Seats: Http Status: " + response.getStatusCode());
+//                    throw new RuntimeException("Error while Releasing Seats: Http Status: " + response.getStatusCode());
                 })
                 .body(new ParameterizedTypeReference<>() {
                 });

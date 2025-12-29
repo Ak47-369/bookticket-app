@@ -64,7 +64,7 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     })
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<?> register(@Valid @org.springframework.web.bind.annotation.RequestBody RegisterRequest registerRequest) {
         UserSummary userSummary = userService.createUser(registerRequest);
         final CustomUserDetails userDetails = (CustomUserDetails) userDetailsService.loadUserByUsername(userSummary.email());
         final String jwt = jwtUtils.generateToken(userDetails);
@@ -98,7 +98,7 @@ public class AuthenticationController {
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     })
     @PostMapping("/login")
-    public ResponseEntity<?> authenticateUser(@RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<?> authenticateUser(@Valid @org.springframework.web.bind.annotation.RequestBody LoginRequest loginRequest) {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.email(), loginRequest.password())
         );

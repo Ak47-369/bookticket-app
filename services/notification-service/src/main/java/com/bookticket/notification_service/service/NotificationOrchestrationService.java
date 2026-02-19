@@ -10,6 +10,7 @@ import com.bookticket.notification_service.exception.NonRetryableNotificationExc
 import com.bookticket.notification_service.exception.RetryableNotificationException;
 import com.bookticket.notification_service.security.UserContext;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Recover;
 import org.springframework.retry.annotation.Retryable;
@@ -21,6 +22,9 @@ import org.springframework.web.client.ResourceAccessException;
 import org.springframework.web.client.RestClientException;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.Executor;
 
 @Service
 @Slf4j
@@ -33,11 +37,13 @@ public class NotificationOrchestrationService {
     private final BookingService bookingService;
     private final EmailTemplateService emailTemplateService;
     private final NotificationDLQService dlqService;
+    private final Executor notificationExecutor;
 
     public NotificationOrchestrationService(EmailService emailService, PdfService pdfService, UserService userService,
                                             TheaterService theaterService, BookingService bookingService,
                                             EmailTemplateService emailTemplateService,
-                                            NotificationDLQService dlqService) {
+                                            NotificationDLQService dlqService,
+                                            @Qualifier("notificationExecutor")Executor notificationExecutor) {
         this.emailService = emailService;
         this.pdfService = pdfService;
         this.userService = userService;
@@ -45,6 +51,7 @@ public class NotificationOrchestrationService {
         this.bookingService = bookingService;
         this.emailTemplateService = emailTemplateService;
         this.dlqService = dlqService;
+        this.notificationExecutor = notificationExecutor;
     }
 
     /**
@@ -66,23 +73,8 @@ public class NotificationOrchestrationService {
         TicketDetails ticketDetails;
         try {
             UserContext.setUserId(bookingSuccessEvent.userId());
+            ticketDetails = fetchTicketDetails(bookingSuccessEvent);
 
-            // Fetch user email with proper error handling
-            String userEmail = fetchUserEmail(bookingSuccessEvent.userId());
-
-            // Fetch show details with proper error handling
-            ShowDetails showDetails = fetchShowDetails(bookingSuccessEvent.showId());
-
-            // Fetch seat details with proper error handling
-            List<SeatDetails> seatDetails = fetchSeatDetails(bookingSuccessEvent.bookingId());
-
-            ticketDetails = new TicketDetails(
-                bookingSuccessEvent.bookingId(),
-                bookingSuccessEvent.userId(),
-                userEmail,
-                showDetails,
-                seatDetails
-            );
         } catch (RetryableNotificationException e) {
             log.error("Retryable error fetching ticket details for booking {}: {}",
                     bookingSuccessEvent.bookingId(), e.getMessage());
@@ -143,6 +135,7 @@ public class NotificationOrchestrationService {
      * Recovery method for non-retryable errors
      * Stores in DLQ with FAILED status (no retry needed)
      * This provides visibility and monitoring for permanent failures like 404, 403
+     * Called immediately when a non-retryable error occurs
      */
     @Recover
     public void recoverBookingSuccessNonRetryable(NonRetryableNotificationException e, BookingSuccessEvent bookingSuccessEvent) {
@@ -179,7 +172,7 @@ public class NotificationOrchestrationService {
     )
     public void processBookingFailure(BookingFailedEvent bookingFailedEvent) {
         log.info("Processing failed booking for user: {}", bookingFailedEvent.userId());
-        String userEmail = null;
+        String userEmail;
 
         try {
             UserContext.setUserId(bookingFailedEvent.userId());
@@ -306,6 +299,51 @@ public class NotificationOrchestrationService {
                 e
             );
         }
+    }
+
+    /*
+    Fetch ticket details with error handling
+     */
+    private TicketDetails fetchTicketDetails(BookingSuccessEvent bookingSuccessEvent) {
+        TicketDetails ticketDetails;
+        try {
+            // Fetch user email, show details and seat details in parallel
+            CompletableFuture<String> userEmailFuture = CompletableFuture.supplyAsync(() -> fetchUserEmail(bookingSuccessEvent.userId()),notificationExecutor);
+            CompletableFuture<ShowDetails> showDetailsFuture = CompletableFuture.supplyAsync(() -> fetchShowDetails(bookingSuccessEvent.showId()), notificationExecutor);
+            CompletableFuture<List<SeatDetails>> seatDetailsFuture = CompletableFuture.supplyAsync(() -> fetchSeatDetails(bookingSuccessEvent.bookingId()), notificationExecutor);
+            CompletableFuture.allOf(userEmailFuture, showDetailsFuture, seatDetailsFuture).join();
+
+            // Fetch user email with proper error handling
+            String userEmail = userEmailFuture.join();
+
+            // Fetch show details with proper error handling
+            ShowDetails showDetails = showDetailsFuture.join();
+
+            // Fetch seat details with proper error handling
+            List<SeatDetails> seatDetails = seatDetailsFuture.join();
+
+            ticketDetails = new TicketDetails(
+                    bookingSuccessEvent.bookingId(),
+                    bookingSuccessEvent.userId(),
+                    userEmail,
+                    showDetails,
+                    seatDetails
+            );
+        } catch (CompletionException e) {
+            Throwable cause = e.getCause();
+            if((cause instanceof RetryableNotificationException retryableEx)){
+                throw retryableEx;
+            } else if ((cause instanceof  NonRetryableNotificationException nonRetryableEx)){
+                throw nonRetryableEx;
+            } else {
+                throw new RetryableNotificationException(
+                        "Asynchronous operation failed",
+                        "SYSTEM_ERROR",
+                        e
+                );
+            }
+        }
+        return ticketDetails;
     }
 
     /**
